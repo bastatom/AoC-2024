@@ -26,6 +26,25 @@ func scan(args ...any) bool {
 	panic(fmt.Sprintf("failed to scan: %v", err))
 }
 
+func scanLineToSlice[T any]() ([]T, bool) {
+	var res []T
+	var x T
+
+	line, _ := reader.ReadString('\n')
+	lineR := bufio.NewReader(strings.NewReader(line))
+
+	for {
+		n, _ := fmt.Fscan(lineR, &x)
+		if n == 0 {
+			break
+		}
+
+		res = append(res, x)
+	}
+
+	return res, len(res) != 0
+}
+
 func printToOut(args ...interface{}) {
 	_, err := fmt.Fprintln(writer, args...)
 	if err != nil {
@@ -40,6 +59,8 @@ func panicf(format string, args ...interface{}) {
 var taskSolvers = map[string]func(){
 	"1_a": solve1a,
 	"1_b": solve1b,
+	"2_a": solve2a,
+	"2_b": solve2b,
 }
 
 func main() {
