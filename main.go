@@ -23,7 +23,22 @@ func scan(args ...any) bool {
 		return false
 	}
 
-	panic(fmt.Sprintf("failed to scan: %v", err))
+	panicf("failed to scan: %v", err)
+	return false
+}
+
+func sscan(s string, args ...any) bool {
+	n, err := fmt.Sscan(s, args...)
+	if n == len(args) {
+		return true
+	}
+
+	if errors.Is(err, io.EOF) {
+		return false
+	}
+
+	panicf("failed to scan: %v", err)
+	return false
 }
 
 func scanLineToSlice[T any]() ([]T, bool) {
@@ -61,6 +76,8 @@ var taskSolvers = map[string]func(){
 	"1_b": solve1b,
 	"2_a": solve2a,
 	"2_b": solve2b,
+	"3_a": solve3a,
+	"3_b": solve3b,
 }
 
 func main() {
