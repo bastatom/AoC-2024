@@ -14,6 +14,10 @@ var reader *bufio.Reader
 var writer = bufio.NewWriter(os.Stdout)
 
 func scan(args ...any) bool {
+	return fscan(reader, args...)
+}
+
+func fscan(reader io.Reader, args ...any) bool {
 	n, err := fmt.Fscan(reader, args...)
 	if n == len(args) {
 		return true
@@ -24,6 +28,19 @@ func scan(args ...any) bool {
 	}
 
 	panicf("failed to scan: %v", err)
+	return false
+}
+
+func scanf(format string, args ...any) bool {
+	n, err := fmt.Fscanf(reader, format, args...)
+	if n == len(args) {
+		return true
+	}
+
+	if errors.Is(err, io.EOF) {
+		return false
+	}
+
 	return false
 }
 
@@ -41,15 +58,25 @@ func sscan(s string, args ...any) bool {
 	return false
 }
 
-func scanLineToSlice[T any]() ([]T, bool) {
+func sscanf(s string, format string, args ...any) bool {
+	n, err := fmt.Sscanf(s, format, args...)
+	if n == len(args) {
+		return true
+	}
+
+	if errors.Is(err, io.EOF) {
+		return false
+	}
+
+	return false
+}
+
+func fscanLineToSlice[T any](reader io.Reader) ([]T, bool) {
 	var res []T
 	var x T
 
-	line, _ := reader.ReadString('\n')
-	lineR := bufio.NewReader(strings.NewReader(line))
-
 	for {
-		n, _ := fmt.Fscan(lineR, &x)
+		n, _ := fmt.Fscan(reader, &x)
 		if n == 0 {
 			break
 		}
@@ -58,6 +85,12 @@ func scanLineToSlice[T any]() ([]T, bool) {
 	}
 
 	return res, len(res) != 0
+}
+
+func scanLineToSlice[T any]() ([]T, bool) {
+	line, _ := reader.ReadString('\n')
+	lineR := bufio.NewReader(strings.NewReader(line))
+	return fscanLineToSlice[T](lineR)
 }
 
 func printToOut(args ...interface{}) {
@@ -80,6 +113,8 @@ var taskSolvers = map[string]func(){
 	"3_b": solve3b,
 	"4_a": solve4a,
 	"4_b": solve4b,
+	"5_a": solve5a,
+	"5_b": solve5b,
 }
 
 func main() {
