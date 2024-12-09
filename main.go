@@ -30,8 +30,11 @@ func fscan(reader io.Reader, args ...any) bool {
 	panicf("failed to scan: %v", err)
 	return false
 }
-
 func scanf(format string, args ...any) bool {
+	return fscanf(reader, format, args...)
+}
+
+func fscanf(reader io.Reader, format string, args ...any) bool {
 	n, err := fmt.Fscanf(reader, format, args...)
 	if n == len(args) {
 		return true
@@ -116,6 +119,9 @@ var taskSolvers = map[string]func(){
 	"5_a": solve5a,
 	"5_b": solve5b,
 	"6_a": solve6a,
+	// TODO: 6_b
+	"7_a": solve7a,
+	"7_b": solve7b,
 }
 
 func main() {
