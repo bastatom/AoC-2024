@@ -132,6 +132,8 @@ var taskSolvers = map[string]func(){
 	"11_b": solve11b,
 	"12_a": solve12a,
 	"12_b": solve12b,
+	"13_a": solve13a,
+	"13_b": solve13b,
 }
 
 func main() {
