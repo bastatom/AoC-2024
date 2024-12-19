@@ -61,8 +61,8 @@ func solve12a() {
 	printToOut(res)
 }
 
-func safeMod(val int, mod int) int {
-	return (val + mod) % mod
+func safeMod[T int | int64](val T, mod T) T {
+	return (val%mod + mod) % mod
 }
 
 func solve12b() {
