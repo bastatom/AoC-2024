@@ -71,7 +71,7 @@ func moveRobots(positions, velocities [][2]int64, dimX, dimY int64) {
 	}
 }
 
-var dirs = [4][2]int{{-1, 0}, {0, 1}, {1, 0}, {0, -1}}
+var dirs = [4][2]int{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
 
 func get2dByte(s [][]byte, x, y int) byte {
 	if y < 0 || y >= len(s) {
