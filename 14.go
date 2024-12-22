@@ -73,18 +73,19 @@ func moveRobots(positions, velocities [][2]int64, dimX, dimY int64) {
 
 var dirs = [4][2]int{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
 
-func get2dByte(s [][]byte, x, y int) byte {
+func get2dVal[T any](s [][]T, x, y int) T {
+	var zero T
 	if y < 0 || y >= len(s) {
-		return 0
+		return zero
 	}
 	if x < 0 || x >= len(s[y]) {
-		return 0
+		return zero
 	}
 	return s[y][x]
 }
 
 func markPartition(s [][]byte, x, y int, searchFor byte, mark byte) {
-	if get2dByte(s, x, y) != searchFor {
+	if get2dVal(s, x, y) != searchFor {
 		return
 	}
 	s[y][x] = mark
